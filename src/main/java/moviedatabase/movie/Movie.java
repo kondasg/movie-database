@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import moviedatabase.director.Director;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class Movie {
     @ElementCollection
     @CollectionTable(name = "movies_ratings", joinColumns = @JoinColumn(name = "movie_id"))
     @Column(name = "rating")
-    private List<Integer> ratings;
+    private List<Integer> ratings = new ArrayList<>();
 
     @Transient
     private double averageRating;
