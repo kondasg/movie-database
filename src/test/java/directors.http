@@ -1,0 +1,34 @@
+### List of all directors
+
+GET http://localhost:8080/api/directors
+Accept: application/json
+
+### Create director
+
+POST http://localhost:8080/api/directors
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Spilberg"
+}
+
+### Find director by ID
+
+GET http://localhost:8080/api/directors/1
+Accept: application/json
+
+### Modify director
+
+PUT http://localhost:8080/api/directors/1
+Content-Type: application/json
+
+{
+  "name": "Spielberg",
+  "birthday": "1946-01-01"
+}
+
+### Delete director
+
+DELETE http://localhost:8080/api/directors/1
+Accept: application/json
