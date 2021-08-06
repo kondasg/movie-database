@@ -3,6 +3,9 @@ package moviedatabase.movie;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -23,12 +26,12 @@ public class MovieController {
     }
 
     @PostMapping
-    public MovieDTO createMovie(@RequestBody CreateMovieCommand command) {
+    public MovieDTO createMovie(@Valid  @RequestBody CreateMovieCommand command) {
         return movieService.createMovie(command);
     }
 
     @PutMapping("/{id}")
-    public MovieDTO updateMovie(@PathVariable("id") long id, @RequestBody UpdateMovieCommand command) {
+    public MovieDTO updateMovie(@PathVariable("id") long id, @Valid @RequestBody UpdateMovieCommand command) {
         return movieService.updateMovie(id, command);
     }
 
@@ -43,7 +46,11 @@ public class MovieController {
     }
 
     @PostMapping("/{id}/rating/{rating}")
-    public MovieDTO addRating(@PathVariable("id") long id, @PathVariable("rating") int rating) {
+    public MovieDTO addRating(@PathVariable("id") long id,
+                              @PathVariable("rating")
+                              @Min(value = 1, message = "Rating must be greater than or equal to 1")
+                              @Max(value = 5, message = "Rating must be less than or equal to 5")
+                                      int rating) {
         return movieService.addRating(id, rating);
     }
 }

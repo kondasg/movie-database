@@ -3,6 +3,7 @@ package moviedatabase.director;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,12 +24,12 @@ public class DirectorController {
     }
 
     @PostMapping
-    public DirectorDTO createDirector(@RequestBody CreateDirectorCommand command) {
+    public DirectorDTO createDirector(@Valid  @RequestBody CreateDirectorCommand command) {
         return directorService.createDirector(command);
     }
 
     @PutMapping("/{id}")
-    public DirectorDTO updateDirector(@PathVariable("id") long id, @RequestBody UpdeateDirectorCommand command) {
+    public DirectorDTO updateDirector(@PathVariable("id") long id, @Valid @RequestBody UpdeateDirectorCommand command) {
         return directorService.updateDirector(id, command);
     }
 
