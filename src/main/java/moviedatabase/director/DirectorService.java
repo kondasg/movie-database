@@ -32,7 +32,7 @@ public class DirectorService {
     }
 
     @Transactional
-    public DirectorDTO updateDirector(long id, UpdeateDirectorCommand command) {
+    public DirectorDTO updateDirector(long id, UpdateDirectorCommand command) {
         Director director = getDirectorById(id);
         director.setName(command.getName());
         director.setBirthday(command.getBirthday());

@@ -36,7 +36,7 @@ public class DirectorController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update director by ID")
-    public DirectorDTO updateDirector(@PathVariable("id") long id, @Valid @RequestBody UpdeateDirectorCommand command) {
+    public DirectorDTO updateDirector(@PathVariable("id") long id, @Valid @RequestBody UpdateDirectorCommand command) {
         return directorService.updateDirector(id, command);
     }
 

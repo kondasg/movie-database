@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdeateDirectorCommand {
+public class UpdateDirectorCommand {
 
     @NotBlank(message = "The director's name cannot be empty")
     @Size(min = 3, max = 255, message = "The length of the director's name must be between 3 and 255 characters")
