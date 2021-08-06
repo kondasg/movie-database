@@ -36,8 +36,7 @@ public class Movie {
     @Transient
     private double averageRating;
 
-    public Movie(Director director, String title, int year, int length) {
-        this.director = director;
+    public Movie(String title, int year, int length) {
         this.title = title;
         this.year = year;
         this.length = length;

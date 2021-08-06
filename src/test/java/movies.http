@@ -1,0 +1,48 @@
+### List of all movies
+
+GET http://localhost:8080/api/movies
+Accept: application/json
+
+### Get movie by ID
+
+GET http://localhost:8080/api/movies/3
+Accept: application/json
+
+### Create movie
+
+POST http://localhost:8080/api/movies
+Content-Type: application/json
+Accept: application/json
+
+{
+  "directorId": 2,
+  "title": "Különvélemény",
+  "year": 2002,
+  "length": 146
+}
+### Update movie
+
+PUT http://localhost:8080/api/movies/1
+Content-Type: application/json
+
+{
+  "title": "Különv",
+  "year": 2000,
+  "length": 1460
+}
+
+### Delete movie
+
+DELETE http://localhost:8080/api/movies/1
+Accept: application/json
+
+### Add rating
+
+POST http://localhost:8080/api/movies/1/rating/3
+Content-Type: application/json
+Accept: application/json
+
+### Get movie ratings
+
+GET http://localhost:8080/api/movies/1/ratings
+Accept: application/json
