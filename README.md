@@ -6,15 +6,12 @@ Az alkalmazással lehetőségünk van egy egyszerű filmes adartbázist létreho
 és rajta különböző műveleteket végrehjajtani. Tudunk kezelni rendezőket és a hozzájuk tartozó filmeket.
 A filmekre tudunk leadni értékeléseket és azokat le tudjuk kérdezni.
 
----
-
-## Technológiai
+## Technológia
 
 Háromrétegű webes alkalmazás RESTful webszolgáltatások és Java Spring Boot keretrendszer használatával.
 Az adatok tárolására MariaDB adtbázist használ, az adatbáziskezelés Spring Data JPA technológiával történik.
 Az alaklamzás része a Swagger UI, amelyből kinyehető az alkalmazás OpenApi dokumentációja.
 
----
 
 ## Használat
 
