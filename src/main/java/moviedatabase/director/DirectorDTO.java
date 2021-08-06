@@ -16,5 +16,5 @@ public class DirectorDTO {
     private Long id;
     private String name;
     private LocalDate birthday;
-    //private List<MovieDTO> movies;
+    private List<MovieDTO> movies;
 }
