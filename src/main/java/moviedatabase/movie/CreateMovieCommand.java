@@ -23,7 +23,7 @@ public class CreateMovieCommand {
     @Size(min = 1, max = 255, message = "The length of the movie's name must be between 1 and 255 characters")
     @Schema(description = "The movie's title", example = "Titanic")
     private String title;
-    @Schema(description = "The movie's title", example = "Titanic")
+    @Schema(description = "The movie's released (year)", example = "1980")
     private int year;
     @Schema(description = "The movie's length (min)", example = "92")
     private int length;

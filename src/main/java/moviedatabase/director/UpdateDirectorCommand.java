@@ -18,6 +18,6 @@ public class UpdateDirectorCommand {
     @Size(min = 3, max = 255, message = "The length of the director's name must be between 3 and 255 characters")
     @Schema(description = "Director's name", example = "Steven Spielberg")
     private String name;
-    @Schema(description = "Director's birthday", example = "1980-01-01")
+    @Schema(description = "Director's birth date", example = "1980-01-01")
     private LocalDate birthday;
 }
