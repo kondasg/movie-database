@@ -1,12 +1,15 @@
 package moviedatabase.director;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
@@ -27,6 +30,8 @@ class DirectorControllerIT {
 
     DirectorDTO director;
     Long directorId;
+    Long wrongId = 9999L;
+    String longString260 = StringUtils.repeat("*", 260);
 
     @BeforeEach
     void init() {
@@ -34,7 +39,7 @@ class DirectorControllerIT {
                 new CreateDirectorCommand("Steven Spielberg", LocalDate.of(1946, 1, 1)),
                 DirectorDTO.class);
         template.postForObject("/api/directors",
-                new CreateDirectorCommand("James Cameron", LocalDate.of(1954, 10, 1)),
+                new CreateDirectorCommand("James Cameron", null),
                 DirectorDTO.class);
         directorId = director.getId();
     }
@@ -56,11 +61,7 @@ class DirectorControllerIT {
 
     @Test
     void findDirectorByIdTest() {
-        DirectorDTO result = template.exchange("/api/directors/" + directorId,
-                HttpMethod.GET,
-                null,
-                DirectorDTO.class)
-                .getBody();
+        DirectorDTO result = template.getForObject("/api/directors/" + directorId, DirectorDTO.class);
 
         assertEquals("Steven Spielberg", result.getName());
         assertEquals(LocalDate.of(1946, 1, 1), result.getBirthday());
@@ -68,10 +69,47 @@ class DirectorControllerIT {
 
     @Test
     void findDirectorByIdNotFoundTest() {
-        Problem result = template.getForObject("/api/directors/123456789", Problem.class);
+        Problem result = template.getForObject("/api/directors/" + wrongId, Problem.class);
 
         assertEquals(URI.create("diector/not-found"), result.getType());
         assertEquals(Status.NOT_FOUND, result.getStatus());
+    }
+
+    @Test
+    void createDirectorStatusCodeTest() {
+        ResponseEntity<DirectorDTO> result = template.exchange("/api/directors/",
+                HttpMethod.POST,
+                new HttpEntity<>(new CreateDirectorCommand("asd", null)),
+                DirectorDTO.class);
+
+        assertEquals(201, result.getStatusCodeValue());
+    }
+
+    @Test
+    void createDirectorBlankNameTest() {
+        Problem result = template.postForObject("/api/directors",
+                new CreateDirectorCommand("", null),
+                Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+        assertEquals("Constraint Violation", result.getTitle());
+    }
+
+    @Test
+    void createDirectorWrongSizeNameTest() {
+        Problem result = template.postForObject("/api/directors",
+                new CreateDirectorCommand("as", null),
+                Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+        assertEquals("Constraint Violation", result.getTitle());
+
+        Problem result2 = template.postForObject("/api/directors",
+                new CreateDirectorCommand(longString260, null),
+                Problem.class);
+
+        assertEquals(Status.BAD_REQUEST, result2.getStatus());
+        assertEquals("Constraint Violation", result2.getTitle());
     }
 
     @Test
@@ -79,14 +117,56 @@ class DirectorControllerIT {
         template.put("/api/directors/" + directorId,
                 new UpdateDirectorCommand("Steven Spielberg UPDATE", LocalDate.of(1966, 11, 11)),
                 DirectorDTO.class);
-        DirectorDTO result = template.exchange("/api/directors/" + directorId,
-                HttpMethod.GET,
-                null,
-                DirectorDTO.class)
-                .getBody();
+
+        DirectorDTO result = template.getForObject("/api/directors/" + directorId, DirectorDTO.class);
 
         assertEquals("Steven Spielberg UPDATE", result.getName());
         assertEquals(LocalDate.of(1966, 11, 11), result.getBirthday());
+    }
+
+    @Test
+    void updateteDirectorBlankNameTest() {
+        Problem result = template.exchange("/api/directors/" + directorId,
+                HttpMethod.PUT,
+                new HttpEntity<>(new UpdateDirectorCommand("", null)),
+                Problem.class)
+                .getBody();
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+        assertEquals("Constraint Violation", result.getTitle());
+    }
+
+    @Test
+    void updateteDirectorWrongSizeNameTest() {
+        Problem result = template.exchange("/api/directors/" + directorId,
+                HttpMethod.PUT,
+                new HttpEntity<>(new UpdateDirectorCommand("as", null)),
+                Problem.class)
+                .getBody();
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+        assertEquals("Constraint Violation", result.getTitle());
+
+        Problem result2 = template.exchange("/api/directors/" + directorId,
+                HttpMethod.PUT,
+                new HttpEntity<>(new UpdateDirectorCommand(longString260, null)),
+                Problem.class)
+                .getBody();
+
+        assertEquals(Status.BAD_REQUEST, result2.getStatus());
+        assertEquals("Constraint Violation", result2.getTitle());
+    }
+
+    @Test
+    void updateDirectorByIdNotFoundTest() {
+        Problem result = template.exchange("/api/directors/" + wrongId,
+                HttpMethod.PUT,
+                new HttpEntity<>(new UpdateDirectorCommand("Steven Spielberg UPDATE", LocalDate.of(1966, 11, 11))),
+                Problem.class)
+                .getBody();
+
+        assertEquals(URI.create("diector/not-found"), result.getType());
+        assertEquals(Status.NOT_FOUND, result.getStatus());
     }
 
     @Test
@@ -98,9 +178,23 @@ class DirectorControllerIT {
                 new ParameterizedTypeReference<List<DirectorDTO>>() {
                 })
                 .getBody();
+
         assertThat(result)
                 .hasSize(1)
                 .extracting(DirectorDTO::getName)
                 .containsExactly("James Cameron");
     }
+
+    @Test
+    void deletDirectorByIdNotFoundTest() {
+        Problem result = template.exchange("/api/directors/" + wrongId,
+                HttpMethod.DELETE,
+                new HttpEntity<>(null),
+                Problem.class)
+                .getBody();
+
+        assertEquals(URI.create("diector/not-found"), result.getType());
+        assertEquals(Status.NOT_FOUND, result.getStatus());
+    }
+
 }
