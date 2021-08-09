@@ -8,9 +8,11 @@ A filmekre tudunk leadni értékeléseket és azokat le tudjuk kérdezni.
 
 ## Technológia
 
-Háromrétegű webes alkalmazás RESTful webszolgáltatások és Java Spring Boot keretrendszer használatával.
+Háromrétegű webes alkalmazás Java Spring Boot keretrendszer használatával, amely REST webszolgáltatások segítségével kommunikál.
 Az adatok tárolására MariaDB adtbázist használ, az adatbáziskezelés Spring Data JPA technológiával történik.
-Az alaklamzás része a Swagger UI, amelyből kinyehető az alkalmazás OpenApi dokumentációja.
+Az adattáblák létrehozásáért a Flyway a felelős. A felesleges gépeléstől a Lombok óv meg minket.
+A DTO-k és az entitások közötti konverziót a ModelMapper végzi. A hibakezeléshez a Zalando problem-spring-web-starter modult használja.
+Az alaklamzás része a Swagger UI, amelyből kinyehető az alkalmazás OpenAPI dokumentációja.
 
 
 ## Használat
