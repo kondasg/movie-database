@@ -18,6 +18,7 @@ public class CreateDirectorCommand {
     @Size(min = 3, max = 255, message = "The length of the director's name must be between 3 and 255 characters")
     @Schema(description = "Director's name", example = "Steven Spielberg")
     private String name;
+    @Birthday(message = "Birthday must be older than today")
     @Schema(description = "Director's birthday", example = "1980-01-01")
     private LocalDate birthday;
 }

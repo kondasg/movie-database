@@ -197,4 +197,16 @@ class DirectorControllerIT {
         assertEquals(Status.NOT_FOUND, result.getStatus());
     }
 
+    @Test
+    void birtdayValidatorTest() {
+        Problem result = template.exchange("/api/directors/" + directorId,
+                HttpMethod.PUT,
+                new HttpEntity<>(new UpdateDirectorCommand("asd", LocalDate.of(2100, 1, 1))),
+                Problem.class)
+                .getBody();
+
+        assertEquals(Status.BAD_REQUEST, result.getStatus());
+        assertEquals("Constraint Violation", result.getTitle());
+    }
+
 }
