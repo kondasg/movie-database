@@ -64,6 +64,6 @@ public class MovieService {
 
     private Movie getMovieById(long id) {
         return movieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException("Movie id not found: " + id));
+                .orElseThrow(() -> new MovieNotFoundException("Movie ID not found: " + id));
     }
 }

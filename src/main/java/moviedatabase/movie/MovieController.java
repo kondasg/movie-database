@@ -2,6 +2,7 @@ package moviedatabase.movie;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,12 +25,15 @@ public class MovieController {
 
     @GetMapping
     @Operation(summary = "List of all movies")
+    @ApiResponse(responseCode = "200", description = "Successful")
     public List<MovieDTO> getAllMovies() {
         return movieService.getAllMovies();
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Find movie by ID")
+    @ApiResponse(responseCode = "200", description = "Successful")
+    @ApiResponse(responseCode = "404", description = "Movie ID not found")
     public MovieDTO findMovieById(
             @Parameter(description = "ID of the movie", example = "1")
             @PathVariable("id") long id) {
@@ -39,12 +43,15 @@ public class MovieController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create movie")
+    @ApiResponse(responseCode = "201", description = "Successful")
     public MovieDTO createMovie(@Valid @RequestBody CreateMovieCommand command) {
         return movieService.createMovie(command);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update movie by ID")
+    @ApiResponse(responseCode = "200", description = "Successful")
+    @ApiResponse(responseCode = "404", description = "Movie ID not found")
     public MovieDTO updateMovie(
             @Parameter(description = "ID of the movie", example = "1")
             @PathVariable("id") long id,
@@ -55,6 +62,8 @@ public class MovieController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete movie by ID")
+    @ApiResponse(responseCode = "204", description = "Successful")
+    @ApiResponse(responseCode = "404", description = "Movie ID not found")
     public void deleteMovie(
             @Parameter(description = "ID of the movie", example = "1")
             @PathVariable("id") long id) {
@@ -63,6 +72,8 @@ public class MovieController {
 
     @GetMapping("/{id}/ratings")
     @Operation(summary = "List of movie ratings by movie ID")
+    @ApiResponse(responseCode = "200", description = "Successful")
+    @ApiResponse(responseCode = "404", description = "Movie ID not found")
     public MovieRatingsDTO getRatings(
             @Parameter(description = "ID of the movie", example = "1")
             @PathVariable("id") long id) {
@@ -71,6 +82,8 @@ public class MovieController {
 
     @PostMapping("/{id}/rating/{rating}")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiResponse(responseCode = "201", description = "Successful")
+    @ApiResponse(responseCode = "404", description = "Movie ID not found")
     @Operation(summary = "Add rating on the movie by ID")
     public MovieDTO addRating(
             @Parameter(description = "ID of the movie", example = "1")

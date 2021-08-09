@@ -46,6 +46,6 @@ public class DirectorService {
 
     public Director getDirectorById(long id) {
         return directorRepository.findById(id)
-                .orElseThrow(() -> new DirectorNotFoundException("Director id not found: " + id));
+                .orElseThrow(() -> new DirectorNotFoundException("Director ID not found: " + id));
     }
 }
