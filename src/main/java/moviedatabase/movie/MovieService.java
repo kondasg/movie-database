@@ -51,6 +51,7 @@ public class MovieService {
     }
 
     public MovieRatingsDTO getRatings(long id) {
+        getMovieById(id);
         return modelMapper.map(getMovieById(id), MovieRatingsDTO.class);
     }
 
