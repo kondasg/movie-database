@@ -3,6 +3,7 @@ package moviedatabase.director;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ public class DirectorController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create director")
     public DirectorDTO createDirector(@Valid  @RequestBody CreateDirectorCommand command) {
         return directorService.createDirector(command);
@@ -41,6 +43,7 @@ public class DirectorController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete director by ID")
     public void deleteDirector(@PathVariable("id") long id) {
         directorService.deleteDirector(id);

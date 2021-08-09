@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class MovieController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create movie")
     public MovieDTO createMovie(@Valid @RequestBody CreateMovieCommand command) {
         return movieService.createMovie(command);
@@ -51,6 +53,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete movie by ID")
     public void deleteMovie(
             @Parameter(description = "ID of the movie", example = "1")
@@ -67,6 +70,7 @@ public class MovieController {
     }
 
     @PostMapping("/{id}/rating/{rating}")
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add rating on the movie by ID")
     public MovieDTO addRating(
             @Parameter(description = "ID of the movie", example = "1")

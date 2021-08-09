@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class UpdateMovieCommand {
 
-    @NotNull(message = "The movie's title cannot be empty")
+    @NotBlank(message = "The movie's title cannot be empty")
     @Size(min = 1, max = 255, message = "The length of the movie's name must be between 1 and 255 characters")
     @Schema(description = "The movie's title", example = "Titanic")
     private String title;
